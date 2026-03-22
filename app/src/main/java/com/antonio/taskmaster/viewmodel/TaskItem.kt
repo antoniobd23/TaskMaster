@@ -1,5 +1,6 @@
 package com.antonio.taskmaster.viewmodel
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,12 @@ import com.antonio.taskmaster.data.Task
 
 @Composable
 fun TaskItem(task: Task, onToggle: () -> Unit, onDelete: () -> Unit) {
+    val priorityColor = when (task.priority) {
+        3 -> Color.Red
+        2 -> Color(0xFFFFC107)
+        else -> Color.Green
+    }
+
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
             if (it == SwipeToDismissBoxValue.EndToStart) {
@@ -66,6 +73,7 @@ fun TaskItem(task: Task, onToggle: () -> Unit, onDelete: () -> Unit) {
     ) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
+            border = BorderStroke(2.dp, priorityColor),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             Row(
