@@ -19,16 +19,22 @@ class TaskViewModel(private val dao: TaskDao) : ViewModel() {
             initialValue = emptyList()
         )
 
-    fun addTask(title: String) {
-        viewModelScope.launch { dao.insertTask(Task(title = title)) }
+    fun addTask(title: String, priority: Int) {
+        viewModelScope.launch {
+            dao.insertTask(Task(title = title, priority = priority))
+        }
     }
 
     fun toggleTask(task: Task) {
-        viewModelScope.launch { dao.updateTask(task.copy(isDone = !task.isDone)) }
+        viewModelScope.launch {
+            dao.updateTask(task.copy(isDone = !task.isDone))
+        }
     }
 
     fun deleteTask(task: Task) {
-        viewModelScope.launch { dao.deleteTask(task) }
+        viewModelScope.launch {
+            dao.deleteTask(task)
+        }
     }
 }
 
