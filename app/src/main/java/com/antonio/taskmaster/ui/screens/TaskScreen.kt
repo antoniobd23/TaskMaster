@@ -31,14 +31,13 @@ import com.antonio.taskmaster.viewmodel.TaskViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(viewModel: TaskViewModel) {
-    // ... (El código de la pantalla, usando los imports de arriba)
     val tasks by viewModel.tasks.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("TaskMaster") },
+                title = { Text("Mis Tareas") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -46,15 +45,19 @@ fun TaskScreen(viewModel: TaskViewModel) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showDialog = true }) {
+            FloatingActionButton(onClick = { showDialog = true}) {
                 Icon(Icons.Default.Add, contentDescription = "Añadir")
             }
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             if (tasks.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No hay tareas. ¡Añade una!")
+                    Text("No hay tareas pendientes.")
                 }
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -68,11 +71,12 @@ fun TaskScreen(viewModel: TaskViewModel) {
                 }
             }
         }
+
         if (showDialog) {
             AddTaskDialog(
                 onDismiss = { showDialog = false },
-                onConfirm = { title ->
-                    viewModel.addTask(title)
+                onConfirm = { title, priority ->
+                    viewModel.addTask(title, priority)
                     showDialog = false
                 }
             )
